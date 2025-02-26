@@ -14,5 +14,21 @@
       "messages": "critic_inputs",
       "images": "critic_images"
     }
+  },
+  "critic_train_webshopping": {
+    "file_name": "aitw_anns/webshopping_train_critic.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "critic_inputs",
+      "images": "critic_images"
+    }
+  },
+  "critic_val_webshopping": {
+    "file_name": "aitw_anns/webshopping_val_critic.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "critic_inputs",
+      "images": "critic_images"
+    }
   }
 }

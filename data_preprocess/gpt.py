@@ -4,6 +4,9 @@ sys.path.append(os.getcwd())
 
 import io
 from PIL import Image
+import openai
+import yaml   
+from typing import Optional
 
 from data_preprocess.prompt import prompt_score_system, prompt_score_user
 
@@ -40,9 +43,27 @@ def get_message(text_list, image_path_list) -> list:
     return message
 
 
-def get_gpt_4o(messages):
-    # TODO set your GPT-4o API
-    return None
+def get_gpt_4o(messages, config_path: str = "configs/gpt_config.yaml") -> Optional[str]:
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = yaml.safe_load(f)
+
+        openai.api_key = config['api_key']
+         
+        model = config.get('model', 'gpt-4o')
+        temperature = config.get('temperature', 0.7)
+        max_tokens = config.get('max_tokens', 1000)
+
+        response = openai.chat.completions.create(
+            model=model,
+            messages=messages,
+            temperature=temperature,
+            max_tokens=max_tokens
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        print(f"API error: {str(e)}")
+        return None
     
 class GPTScorer:
     def __init__(self):

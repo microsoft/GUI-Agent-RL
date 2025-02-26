@@ -9,10 +9,6 @@ We propose an environment-free RL framework that decouples value estimation from
   <img width="70%" src="docs/structure.jpg">
 </div>
 
-<div align="center">
-  <img width="70%" src="docs/action_space.png">
-</div>
-
 ## Quick Start 🚀
 
 ### Step 1: Build Environment
@@ -42,6 +38,7 @@ Organize the files as follows:
 GUI-Agent-RL/
     data/
       aitw_anns/
+      images/
     images/
       aitw_images/
     checkpoints/
@@ -76,6 +73,7 @@ Checkpoints are saved in `checkpoints/policy_general` and `checkpoints/policy_we
 
 ### Step 6: Evaluation
 - **Offline Evaluation**
+Please modify the save_path to point to the exact checkpoints you want to evaluate (which you obtained in Step 5).
   ```bash
   python3 train.py --task general --eval
   python3 train.py --task webshopping --eval
