@@ -1,9 +1,7 @@
 import argparse
 import yaml
 import os
-from accelerate import Accelerator, DistributedDataParallelKwargs, InitProcessGroupKwargs
-from datetime import timedelta
-from tqdm import tqdm
+from accelerate import Accelerator
 import torch
 from torch.utils.data import DataLoader
 from qwen_vl_utils import process_vision_info
@@ -11,13 +9,13 @@ import logging
 import random
 
 import utils
-from dataset.digirl_dataset import ReplayBuffer, DummyDataset
-from models.autoui_model import ImageFeatureExtractor, AutoUIAgent
+from dataset import ReplayBuffer, DummyDataset
+from models.agent import ImageFeatureExtractor, Agent
 from eval_tools.metrix import compute_matrix
 from data_preprocess.utils import update_trajectory
 
 
-class DigiRLTrainer:
+class Trainer:
     def __init__(self,
         agent,
         accelerator,
@@ -191,7 +189,7 @@ def train(
     accelerator,
     config
 ):
-    trainer = DigiRLTrainer(
+    trainer = Trainer(
         agent=agent,
         accelerator=accelerator,
         tokenizer=agent.tokenizer,
@@ -263,7 +261,7 @@ def evaluation(
         position_dict[f"{ann['ep_id']}_{ann['step_id']}"] = ann["position"]
 
     if not os.path.exists(result_wpath):
-        trainer = DigiRLTrainer(
+        trainer = Trainer(
             agent=agent,
             accelerator=accelerator,
             tokenizer=agent.tokenizer,
@@ -291,10 +289,10 @@ if __name__ == "__main__":
     parser.add_argument('--eval', action='store_true')  
     args = parser.parse_args()
 
-    if args.task == "webshop":
-        config = "configs/policy/rl_qwen2.5.yaml"
+    if args.task == "general":
+        config = "configs/train_policy_general.yaml"
     else:
-        config = "configs/policy/rl_qwen2.5.yaml"
+        config = "configs/train_policy_webshopping.yaml"
 
     with open(config, 'r') as file:
         config = yaml.safe_load(file)
@@ -305,9 +303,9 @@ if __name__ == "__main__":
     
     accelerator = Accelerator()
 
-    print("### load SeeclickAgent")
+    print("### Agent")
 
-    agent = AutoUIAgent(
+    agent = Agent(
         device=accelerator.device,
         accelerator=accelerator,
         temperature=config["temperature"],

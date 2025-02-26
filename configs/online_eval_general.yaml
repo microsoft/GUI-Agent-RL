@@ -1,5 +1,4 @@
-model_name: # TODO
-output_name: # TODO
+output_name: general
 agent_url: # https://xxx.gradio.live
 
 batch_size: 1

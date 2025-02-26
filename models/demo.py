@@ -6,7 +6,7 @@ import gradio as gr
 from accelerate import Accelerator
 import argparse
 import spaces
-from models.autoui_model import AutoUIAgent
+from models.agent import AutoUIAgent
 from train_rl import DigiRLTrainer
 
 
@@ -61,18 +61,9 @@ def main(model_name):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model', type=str, required=True)
+    parser.add_argument('--model_path', type=str, required=True)
 
     args = parser.parse_args()
-
-    if args.model == "autoui":
-        model_name = "checkpoints/Auto-UI-Base"
-    elif args.model == "our_general":
-        model_name = "checkpoints/rl-1227/epoch_13"
-    elif args.model == "our_webshop":
-        model_name = "checkpoints/rl-webshop/epoch_13"
-    else:
-        model_name = ""
     
-    print(f"### model_name: {model_name}")
-    main(model_name)
+    print(f"### model_name: {args.model_path}")
+    main(args.model_path)

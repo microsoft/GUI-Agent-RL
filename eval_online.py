@@ -41,10 +41,7 @@ def evaluation(config, agent, dataset, env, ann_wpath):
             current_screenshot_path = env.get_obs(task_id, step_num)
             while not done:
                 step_num += 1
-                if config["model_name"] == "cogagent":
-                    text = query_format.format(task, "".join(history))
-                else:
-                    text = query_format.format("\n".join(history), task)
+                text = query_format.format("\n".join(history), task)
                 
                 raw_action = agent.get_action(text=text, image_path=current_screenshot_path)
                 action = env.translate_action(raw_action)
@@ -52,14 +49,8 @@ def evaluation(config, agent, dataset, env, ann_wpath):
 
                 next_screenshot_path, done, action, explanation = env.step(task_id, step_num, task, raw_action)
                 
-                if config["model_name"] == "cogagent":
-                    pass
-                    # history.append(f"\n{step_num-1}. {grounded_operation}\t{action_description}")
-                elif config["model_name"] == "autogui":
-                    action_desc = to_autoui(action, all_dict=True)
-                    history.append(action_desc)
-                else:
-                    raise KeyError
+                action_desc = to_autoui(action, all_dict=True)
+                history.append(action_desc)
                 
                 print("============")
                 print(f"{task_id}: {task}")
@@ -171,15 +162,12 @@ def write_to_excel(anns, wpath):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model', type=str, required=True)
+    parser.add_argument('--task', type=str, required=True)
 
     args = parser.parse_args()
 
-    config = f"configs/android_eval/online_eval_{args.model}.yaml"
+    config = f"configs/android_eval/online_eval_{args.task}.yaml"
     with open(config, 'r') as file:
         config = yaml.safe_load(file)
 
     main(config)
-
-    # anns = utils.read_jsonl("data/digirl_webshop_offline.jsonl")
-    # write_to_excel(anns[:100], "our.xlsx")

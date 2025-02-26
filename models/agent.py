@@ -4,9 +4,9 @@ from models.T5_model import T5ForMultimodalGeneration
 from PIL import Image
 
 
-class AutoUIAgent(torch.nn.Module):
+class Agent(torch.nn.Module):
     def __init__(self, device, accelerator, policy_lm, critic_lm, do_sample, temperature, max_new_tokens):
-        super(AutoUIAgent, self).__init__()
+        super(Agent, self).__init__()
 
         print(f"### load policy lm: {policy_lm}")
         self.model = T5ForMultimodalGeneration.from_pretrained(policy_lm, torch_dtype=torch.bfloat16).to(device)

@@ -18,7 +18,7 @@ preprocessing_num_workers: 16
 media_dir: ''
 
 ### output
-output_dir: # checkpoints/xxx
+output_dir: checkpoints/critic_general
 logging_steps: 10
 save_steps: 1000
 plot_loss: true

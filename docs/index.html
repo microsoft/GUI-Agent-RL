@@ -71,7 +71,7 @@
 
                 <!-- Github link -->
                 <span class="link-block">
-                <a href="https://github.com/YOUR REPO HERE" target="_blank"
+                <a href="https://github.com/microsoft/GUI-Agent-RL/tree/main" target="_blank"
                 class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                     <i class="fab fa-github"></i>
@@ -97,7 +97,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. Etiam porttitor urna feugiat nibh elementum, et tempor dolor mattis. Donec accumsan enim augue, a vulputate nisi sodales sit amet. Proin bibendum ex eget mauris cursus euismod nec et nibh. Maecenas ac gravida ante, nec cursus dui. Vivamus purus nibh, placerat ac purus eget, sagittis vestibulum metus. Sed vestibulum bibendum lectus gravida commodo. Pellentesque auctor leo vitae sagittis suscipit.
+            Training Vision-Language Models (VLMs) for Graphical User Interfaces (GUI) agents via Reinforcement Learning (RL) faces critical challenges: environment-based RL requires costly interactions, while environment-free methods struggle with distribution shift and reward generalization. We propose an environment-free RL framework that decouples value estimation from policy optimization by leveraging a pretrained Value Environment Model (VEM). VEM predicts state-action values directly from offline data, distilling human-like priors about GUI interaction outcomes without requiring next-state prediction or environmental feedback. This avoids compounding errors and enhances resilience to UI changes by focusing on semantic reasoning (e.g., “Does this action advance the user’s goal?”). The framework operates in two stages: (1) pretraining VEM to estimate long-term action utilities and (2) guiding policy exploration with frozen VEM signals, enabling layout-agnostic GUI automation. Evaluated on Android-in-the-Wild benchmarks, VEM achieves state-of-the-art performance in both offline and online settings, outperforming environment-free baselines significantly and matching environment-based approaches without interaction costs. Importantly, VEM demonstrates that semantic-aware value estimation can achieve comparable performance with online-trained methods. 
           </p>
         </div>
       </div>
@@ -106,6 +106,14 @@
 </section>
 <!-- End paper abstract -->
 
+<!-- Image carousel -->
+<section class="hero is-small">
+  <img src="static/images/carousel4.jpg" alt="MY ALT TEXT"/>
+  <h2 class="subtitle has-text-centered">
+    Fourth image description.
+  </h2>
+</section>
+<!-- End image carousel -->
 
 <!--BibTex citation -->
   <section class="section" id="BibTeX">
