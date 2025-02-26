@@ -1,0 +1,43 @@
+### model
+model_name_or_path: checkpoints/Qwen2-VL-7B-Instruct
+
+### method
+stage: sft
+do_train: true
+finetuning_type: lora
+lora_target: all
+
+### dataset
+dataset: critic_train_general
+eval_dataset: critic_val_general
+template: qwen2_vl
+cutoff_len: 2560
+max_samples: 10000
+overwrite_cache: true
+preprocessing_num_workers: 16
+media_dir: ''
+
+### output
+output_dir: # checkpoints/xxx
+logging_steps: 10
+save_steps: 1000
+plot_loss: true
+overwrite_output_dir: true
+
+### train
+per_device_train_batch_size: 3
+gradient_accumulation_steps: 2
+learning_rate: 1.0e-5
+num_train_epochs: 20.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+ddp_timeout: 180000000
+
+###
+predict_with_generate: false
+do_predict: false
+compute_accuracy: true
+per_device_eval_batch_size: 3
+eval_strategy: steps
+eval_steps: 1000

@@ -1,54 +1,63 @@
 # VEM: Environment-Free Exploration for Training GUI Agent with Value Environment Model
 
-**Jiani Zheng, Lu Wang, Fangkai Yang, Chaoyun Zhang, Lingrui Mei, Wenjie Yin, Qinwei Lin, Dongmei Zhang, Saravan Rajmohan, Qi Zhang**  
-
 
 [![Project](http://img.shields.io/badge/Project-Lynx-E3E4C8.svg)]()
 [![Paper](http://img.shields.io/badge/Paper-arxiv.2307.02469-99D4C8.svg)]()
 
 **update**
-- 2025: Release preprint in [arXiv](https://arxiv.org/abs/xx), and [page](https://LAM-RL.github.io/)
+- 2025.2: Release preprint in [arXiv](https://arxiv.org/abs/xx), and [page](https://microsoft.github.io/LAM-RL/)
 
-
-result on AITW
 <div align="center">
-  <img width="70%" src="images/xx.png">
+  <img width="70%" src="docs/structure_cropped.pdf">
+</div>
+
+<div align="center">
+  <img width="70%" src="docs/action_space.png">
 </div>
 
 ## Quick Start
 
-### environment
+### step 1: environment
 ```angular2html
 conda env create -f environment.yml
 conda activate lam-rl
+
+# if need to train critic model
+git clone https://github.com/hiyouga/LLaMA-Factory.git
+cd LLaMA-Factory
+pip install -e ".[torch,metrics]" 
 ```
 
-### prepare data
-#### step 1: prepare annotations
-the annotation data is under the data
+### step 2: prepare images and annotations
+Download raw images from [https://box.nju.edu.cn/f/96ba5115bae24eaaa44e/](Seeclick page) and put it in `images/` and use your GPT-4o api(fill the TODO) to generate the labeled data, by running:
 ```angular2html
-{
-
-}
+python3 data_preprocess/aitw.py
 ```
-You can also convert your own data in jsonl format, the keys `origin_dataset` and `class` are optional.
 
-#### step 2: prepare images
-Download raw images from corresponding websites: 
-
-
-### step 3: prepare checkpoint
+### step 3: prepare checkpoints
+Download the checkpoints from [checkpoints/]
 organize the files like this:
 ```angular2html
 LAM-RL/
     data/
+      aitw_anns/
     images/
+      aitw_images/
     checkpoints/
+      Auto-UI-Base/
+      blip2-opt-2.7b/
+      roberta-base/
+      Qwen2-VL-7B-Instruct/
+      critic_1218/merge-520
+      rl-1227/epoch_13
+      critic_shopping/merge-
+      rl-webshop/epoch_13
 ```
 
 #### step 3: training the critic model
 ```angular2html
-sh scripts/critic.sh
+sh scripts/train_critic.sh
+sh scripts/critic_merge.sh
 ```
 
 ### step 4: training the policy model
@@ -60,8 +69,8 @@ sh scripts/train_policy.sh
 ```angular2html
 # offline eval
 sh scripts/eval_policy.sh
-# online eval, build the android env according to the DigiRL, and build the gradio demo
-python3 xxx
+# online eval, build the android env according to the DigiRL page, get the url and filling it to configs/online_eval.yaml
+sh scripts/eval_online.sh
 ```
 
 

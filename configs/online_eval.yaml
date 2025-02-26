@@ -1,0 +1,10 @@
+model_name: # TODO
+output_name: # TODO
+agent_url: # https://xxx.gradio.live
+
+batch_size: 1
+data_path: data/aitw_anns/general_val_policy.jsonl
+
+image_save_dir: ./images/online_eval_images
+appium_server_url: # http://xxx
+max_steps: 10
