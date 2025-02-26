@@ -1,12 +1,9 @@
 # VEM: Environment-Free Exploration for Training GUI Agent with Value Environment Model
 
-[![Project](http://img.shields.io/badge/Project-VEM-E3E4C8.svg)]()
-[![Paper](http://img.shields.io/badge/Paper-arxiv.2307.02469-99D4C8.svg)]()
+[![Project](http://img.shields.io/badge/Project-VEM-E3E4C8.svg)](https://microsoft.github.io/LAM-RL/)
+[![Paper](http://img.shields.io/badge/Paper-arxiv.2307.02469-99D4C8.svg)](https://arxiv.org/abs/xx)
 
 We propose an environment-free RL framework that decouples value estimation from policy optimization by leveraging a pretrained Value Environment Model (VEM). VEM predicts state-action values directly from offline data, distilling human-like priors about GUI interaction outcomes without requiring next-state prediction or environmental feedback. The framework operates in two stages: (1) pretraining VEM to estimate long-term action utilities and (2) guiding policy exploration with frozen VEM signals, enabling layout-agnostic GUI automation.
-
-**update**
-- 2025.2: Release preprint in [arXiv](https://arxiv.org/abs/xx), and [page](https://microsoft.github.io/LAM-RL/)
 
 <div align="center">
   <img width="70%" src="docs/structure.jpg">
@@ -16,28 +13,32 @@ We propose an environment-free RL framework that decouples value estimation from
   <img width="70%" src="docs/action_space.png">
 </div>
 
-## Quick Start
+## Quick Start 🚀
 
-### step 1: build environment
-```angular2html
+### Step 1: Build Environment
+```bash
 conda env create -f environment.yml
 conda activate lam-rl
 
-git clone https://github.com/hiyouga/LLaMA-Factory.git
+git clone https://github.com/hiyouga/LLaMA-Factory.git 
 cd LLaMA-Factory
 pip install -e ".[torch,metrics]"
 ```
 
-### step 2: prepare images and annotations
-- Download raw images from [seeclick website](https://box.nju.edu.cn/f/96ba5115bae24eaaa44e/) and put them under `images/aitw_images`
-- To get the labeled data for training critic model, please fill the `api_key` and `model_name` in `configs/gpt_config.yaml` 
-- then running `python3 data_preprocess/aitw.py`, you can get the data for training critic model and policy model.
+### Step 2: Prepare Images and Annotations
+- Download raw images from [SeeClick Website](https://box.nju.edu.cn/f/96ba5115bae24eaaa44e/) and place them under `images/aitw_images`.
+- To get the labeled data for training the critic model, fill in the `api_key` and `model_name` in `configs/gpt_config.yaml`.
+- Then run `python3 data_preprocess/aitw.py` to generate the data for training the critic model and policy model.
 
-### step 3: prepare checkpoints
-Download the checkpoints from [Auto-UI-Base](https://huggingface.co/cooelf/Auto-UI/tree/main)(choose the base version), [blip2-opt-2.7b](https://huggingface.co/Salesforce/blip2-opt-2.7b), [roberta-base](https://huggingface.co/FacebookAI/roberta-base), [Qwen2-VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct)
+### Step 3: Prepare Checkpoints
+Download the checkpoints from:
+- [Auto-UI-Base](https://huggingface.co/cooelf/Auto-UI/tree/main) (choose the base version)
+- [BLIP2-OPT-2.7B](https://huggingface.co/Salesforce/blip2-opt-2.7b)
+- [RoBERTa-Base](https://huggingface.co/FacebookAI/roberta-base)
+- [Qwen2-VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct)
 
-Then organize all the files like this:
-```angular2html
+Organize the files as follows:
+```plaintext
 GUI-Agent-RL/
     data/
       aitw_anns/
@@ -50,31 +51,47 @@ GUI-Agent-RL/
       Qwen2-VL-7B-Instruct/
 ```
 
-### step 4: training the critic model
-We use the LLaMA-Factory to training the critic model,  base on our setting, there need 8 A100, and using the lora to train.
-- To get the checkpoint of critic model of AITW general task, run `sh scripts/train_critic_general.sh`, then the critic checkpoints will store in `checkpoints/critic_general`
-- To get the checkpoint of critic model of AITW webshopping task, run `sh scripts/train_critic_webshopping.sh`, then the critic checkpoints will store in `checkpoints/critic_webshopping`
+### Step 4: Train the Critic Model
+We use the LLaMA-Factory to train the critic model. Based on our settings, this requires 8 A100 GPUs and uses LoRA for training.
+- To obtain the critic model checkpoint for the AITW general task, run:
+  ```bash
+  sh scripts/train_critic_general.sh
+  ```
+  The critic checkpoints will be stored in `checkpoints/critic_general`.
+- To obtain the critic model checkpoint for the AITW webshopping task, run:
+  ```bash
+  sh scripts/train_critic_webshopping.sh
+  ```
+  The critic checkpoints will be stored in `checkpoints/critic_webshopping`.
 
-You can modify the output path by modifying the `output_dir` in yaml. And remember to fill the  `adapter_name_or_path` and `export_dir` in configs/critic_merge.yaml when you running the lora merge.
+You can modify the output path by changing the `output_dir` in the YAML file. Remember to fill in the `adapter_name_or_path` and `export_dir` in `configs/critic_merge.yaml` when merging LoRA.
 
-### step 5: training the policy model
-After getting the critic model, we use the AutoGUI as the base policy model for training, to training the model on general dataset, running:
-```angular2html
+### Step 5: Train the Policy Model
+After obtaining the critic model, we use AutoGUI as the base policy model for training:
+```bash
 python3 train.py --task general
 python3 train.py --task webshopping
 ```
-checkpoints save at `checkpoints/policy_general` and `checkpoints/policy_webshopping` by default.
+Checkpoints are saved in `checkpoints/policy_general` and `checkpoints/policy_webshopping` by default.
 
-### step 6: eval
-- offline eval
-```angular2html
-python3 train.py --task general --eval
-python3 train.py --task webshopping --eval
-```
-- online eval: 
-  - build the android env following this [page](https://github.com/DigiRL-agent/digirl/tree/master/env_setup), get the url, then fill the `appium_server_url` in `configs/online_eval.yaml`
-  - run the agent demo by `python3 models/demo.py --model_path xxx`, get the gradio public url and fill the `agent_url` in `configs/online_eval_general.yaml` or `configs/online_eval_webshopping.yaml`
-  - `python3 eval_online.py --task general` or `python3 eval_online.py --task webshopping`
+### Step 6: Evaluation
+- **Offline Evaluation**
+  ```bash
+  python3 train.py --task general --eval
+  python3 train.py --task webshopping --eval
+  ```
+- **Online Evaluation**
+  - Set up the Android environment according to this [page](https://github.com/DigiRL-agent/digirl/tree/master/env_setup), obtain the URL, and fill in the `appium_server_url` in `configs/online_eval.yaml`.
+  - Run the agent demo using:
+    ```bash
+    python3 models/demo.py --model_path xxx
+    ```
+    Obtain the Gradio public URL and fill in the `agent_url` in `configs/online_eval_general.yaml` or `configs/online_eval_webshopping.yaml`.
+  - Execute:
+    ```bash
+    python3 eval_online.py --task general
+    python3 eval_online.py --task webshopping
+    ```
 
 ## Citation
 If you find this repository useful, please considering giving ⭐ or citing:
