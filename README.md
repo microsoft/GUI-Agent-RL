@@ -1,7 +1,7 @@
 # VEM: Environment-Free Exploration for Training GUI Agent with Value Environment Model
 
 
-[![Project](http://img.shields.io/badge/Project-Lynx-E3E4C8.svg)]()
+[![Project](http://img.shields.io/badge/Project-LAM-RL-E3E4C8.svg)]()
 [![Paper](http://img.shields.io/badge/Paper-arxiv.2307.02469-99D4C8.svg)]()
 
 **update**
