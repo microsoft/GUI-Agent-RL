@@ -38,7 +38,6 @@ class AITW:
         self.part = part
         if not os.path.exists(f"data/aitw_anns"):
             os.mkdir(f"data/aitw_anns")
-        self.date = date
         self.gpt = GPTScorer()
     
 
