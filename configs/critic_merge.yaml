@@ -1,0 +1,11 @@
+### model
+model_name_or_path: checkpoints/Qwen2-VL-7B-Instruct
+adapter_name_or_path: TODO
+template: qwen2_vl
+finetuning_type: lora
+
+### export
+export_dir: TODO
+export_size: 2
+export_device: cpu
+export_legacy_format: false
