@@ -1,7 +1,7 @@
 # VEM: Environment-Free Exploration for Training GUI Agent with Value Environment Model
 
 [![Project](http://img.shields.io/badge/Project-VEM-E3E4C8.svg)](https://microsoft.github.io/GUI-Agent-RL/)
-[![Paper](http://img.shields.io/badge/Paper-arxiv.2307.02469-99D4C8.svg)](https://www.arxiv.org/pdf/2502.18906)
+[![Paper](http://img.shields.io/badge/Paper-arxiv.2502.18906-99D4C8.svg)](https://www.arxiv.org/pdf/2502.18906)
 
 We propose an environment-free RL framework that decouples value estimation from policy optimization by leveraging a pretrained Value Environment Model (VEM). VEM predicts state-action values directly from offline data, distilling human-like priors about GUI interaction outcomes without requiring next-state prediction or environmental feedback. The framework operates in two stages: (1) pretraining VEM to estimate long-term action utilities and (2) guiding policy exploration with frozen VEM signals, enabling layout-agnostic GUI automation.
 
